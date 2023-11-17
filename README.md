@@ -1,5 +1,5 @@
 # coding-test
-"""python
+```python
 def number():
   
-"""
+```
