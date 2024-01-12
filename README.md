@@ -677,3 +677,48 @@ def solution(cards):
     answer=temp1*temp2
     return answer
 ```
+
+# 삼각 달팽이
+- 정수 n이 매개변수로 주어집니다. 다음 그림과 같이 밑변의 길이와 높이가 n인 삼각형에서 맨 위 꼭짓점부터 반시계 방향으로 달팽이 채우기를 진행한 후, 첫 행부터 마지막 행까지 모두 순서대로 합친 새로운 배열을 return 하도록 solution 함수를 완성해주세요.
+
+```python
+def solution(n):
+    answer = [0 for i in range((n*(n+1))//2)]
+    index=0
+    p=1
+    t1=n
+    t2=1
+    for i in range(1,len(answer)+1):
+        answer[index]=i
+        if p%3==1:
+            if t2<t1:
+                if p==1:
+                    index+=t2
+                else:
+                    index=index+t2+p//3*2
+                t2+=1
+            else:
+                p+=1
+                t2=1
+                t1-=1
+                index+=1
+        elif p%3==2:
+            if t2<t1:
+                index+=1
+                t2+=1
+            else:
+                t2=1
+                t1-=1
+                index=index-n+p//3
+                p+=1
+        elif p%3==0:
+            if t2<t1:
+                index=index-n+t2+p//3-1
+                t2+=1
+            else:
+                t2=1
+                t1-=1
+                index=index+(p//3)*2
+                p+=1
+    return answer
+```
