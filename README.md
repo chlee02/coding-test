@@ -1233,3 +1233,29 @@ def solution(sticker):
     answer=max(max(a1),max(a2))
     return answer
 ```
+
+# 섬 연결하기
+- n개의 섬 사이에 다리를 건설하는 비용(costs)이 주어질 때, 최소의 비용으로 모든 섬이 서로 통행 가능하도록 만들 때 필요한 최소 비용을 return 하도록 solution을 완성하세요.
+- 다리를 여러 번 건너더라도, 도달할 수만 있으면 통행 가능하다고 봅니다. 예를 들어 A 섬과 B 섬 사이에 다리가 있고, B 섬과 C 섬 사이에 다리가 있으면 A 섬과 C 섬은 서로 통행 가능합니다.
+```python
+def solution(n, costs):
+    answer = 0
+    check=[0]
+    min_distance=10000000
+    t=0
+    while len(check)<n:
+        for i in range(len(costs)):
+            if (costs[i][0] in check and costs[i][1] not in check) or (costs[i][1] in check and costs[i][0] not in check):
+                if costs[i][2]<min_distance:
+                    min_distance=costs[i][2]
+                    t=i
+        if costs[t][0] in check:
+            check.append(costs[t][1])
+        else:
+            check.append(costs[t][0])
+        answer+=costs[t][2]
+        costs.pop(t)
+        min_distance=10000000
+        t=0
+    return answer
+```
