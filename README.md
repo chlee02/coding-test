@@ -1259,3 +1259,41 @@ def solution(n, costs):
         t=0
     return answer
 ```
+
+
+# 디스크 컨트롤러
+- 하드디스크는 한 번에 하나의 작업만 수행할 수 있습니다. 디스크 컨트롤러를 구현하는 방법은 여러 가지가 있습니다. 가장 일반적인 방법은 요청이 들어온 순서대로 처리하는 것입니다.
+- 각 작업에 대해 [작업이 요청되는 시점, 작업의 소요시간]을 담은 2차원 배열 jobs가 매개변수로 주어질 때, 작업의 요청부터 종료까지 걸린 시간의 평균을 가장 줄이는 방법으로 처리하면 평균이 얼마가 되는지 return 하도록 solution 함수를 작성해주세요. (단, 소수점 이하의 수는 버립니다)
+
+```python
+from heapq import heappush, heappop
+
+def solution(jobs):
+    cur_time=0
+    pro_time=0
+    heap=[]
+    fin=0
+    fin_time=0
+    run=0
+    i=0
+    jobs.sort(key=lambda x:x[0])
+    while(fin<len(jobs)):
+        for j in range(i,len(jobs)):
+            if jobs[i][0]==cur_time:
+                heappush(heap,[jobs[i][1],jobs[i][0]])
+                i+=1
+            else:
+                break
+        if run==1:
+            if cur_time==fin_time:
+                run=0
+        if run==0:
+            if heap:
+                run=1
+                t=heappop(heap)
+                pro_time+=(cur_time+t[0]-t[1])
+                fin+=1
+                fin_time=cur_time+t[0]
+        cur_time+=1
+    return pro_time//len(jobs)
+```
