@@ -1297,3 +1297,50 @@ def solution(jobs):
         cur_time+=1
     return pro_time//len(jobs)
 ```
+
+# 가장 긴 팰린드롬
+- 앞뒤를 뒤집어도 똑같은 문자열을 팰린드롬(palindrome)이라고 합니다.
+- 문자열 s가 주어질 때, s의 부분문자열(Substring)중 가장 긴 팰린드롬의 길이를 return 하는 solution 함수를 완성해 주세요.
+- 예를들면, 문자열 s가 "abcdcba"이면 7을 return하고 "abacde"이면 3을 return합니다.
+
+```python
+def solution(s):
+    answer = 1
+    if len(s)==1:
+        return 1
+    for i in range(len(s)-1):
+        l=0
+        j=1
+        if s[i]==s[i+1]:
+            l=2
+            if l>answer:
+                answer=l
+            while 1:
+                if i-j<0 or i+1+j>=len(s):
+                    break
+                elif s[i-j]==s[i+1+j]:
+                    l=2+2*j
+                    if l>answer:
+                        answer=l
+                    j+=1
+                else:
+                    break
+        if i==0:
+            continue
+        j=0
+        if s[i-1]==s[i+1]:
+            l=3
+            if l>answer:
+                answer=l
+            while 1:
+                if i-1-j<0 or i+1+j>=len(s):
+                    break
+                elif s[i-1-j]==s[i+1+j]:
+                    l=3+2*j
+                    if l>answer:
+                        answer=l
+                    j+=1
+                else:
+                    break
+    return answer
+```
