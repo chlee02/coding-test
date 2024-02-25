@@ -1368,3 +1368,28 @@ def solution(sequence):
     answer2=max(answer)
     return max(answer1,answer2)
 ```
+
+# 합승 택시 요금
+- 밤늦게 귀가할 때 안전을 위해 항상 택시를 이용하던 무지는 최근 야근이 잦아져 택시를 더 많이 이용하게 되어 택시비를 아낄 수 있는 방법을 고민하고 있습니다. "무지"는 자신이 택시를 이용할 때 동료인 어피치 역시 자신과 비슷한 방향으로 가는 택시를 종종 이용하는 것을 알게 되었습니다. "무지"는 "어피치"와 귀가 방향이 비슷하여 택시 합승을 적절히 이용하면 택시요금을 얼마나 아낄 수 있을 지 계산해 보고 "어피치"에게 합승을 제안해 보려고 합니다.
+- 지점의 개수 n, 출발지점을 나타내는 s, A의 도착지점을 나타내는 a, B의 도착지점을 나타내는 b, 지점 사이의 예상 택시요금을 나타내는 fares가 매개변수로 주어집니다. 이때, A, B 두 사람이 s에서 출발해서 각각의 도착 지점까지 택시를 타고 간다고 가정할 때, 최저 예상 택시요금을 계산해서 return 하도록 solution 함수를 완성해 주세요.
+
+```python
+from heapq import heappush,heappop
+
+def solution(n, s, a, b, fares):
+    INF = 100001 * n
+    answer = INF
+    graph = [[INF] * (n+1) for _ in range(n+1)]
+    for start,end,f in fares:
+        graph[start][end] = f
+        graph[end][start] = f
+    for k in range(n+1):
+        for i in range(n+1):
+            for j in range(n+1):
+                graph[i][j] = min(graph[i][j], graph[i][k]+graph[k][j])
+    for x in range(1,n+1):
+        graph[x][x] = 0
+    for x in range(1,n+1):
+        answer = min(graph[s][x]+graph[x][a]+graph[x][b],answer)
+    return answer
+```
