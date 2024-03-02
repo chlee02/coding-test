@@ -1453,3 +1453,58 @@ def solution(enroll, referral, seller, amount):
             answer[dic[s][0]]+=ceil(earn*0.9)
     return answer
 ```
+
+# 순위
+- n명의 권투선수가 권투 대회에 참여했고 각각 1번부터 n번까지 번호를 받았습니다. 권투 경기는 1대1 방식으로 진행이 되고, 만약 A 선수가 B 선수보다 실력이 좋다면 A 선수는 B 선수를 항상 이깁니다. 심판은 주어진 경기 결과를 가지고 선수들의 순위를 매기려 합니다. 하지만 몇몇 경기 결과를 분실하여 정확하게 순위를 매길 수 없습니다.
+- 선수의 수 n, 경기 결과를 담은 2차원 배열 results가 매개변수로 주어질 때 정확하게 순위를 매길 수 있는 선수의 수를 return 하도록 solution 함수를 작성해주세요.
+
+```python
+def solution(n, results):
+    if n==1:
+        return 1
+    answer = 0
+    number=[i for i in range(n+1)]
+    tree=[]
+    p_dic={}
+    c_dic={}
+    for i in results:
+        if i[0] not in tree:
+            tree.append(i[0])
+            number[i[0]]=Node()
+        if i[1] not in tree:
+            tree.append(i[1])
+            number[i[1]]=Node()
+        number[i[0]].child.append(number[i[1]])
+        number[i[1]].parent.append(number[i[0]])
+    for i in range(1,n+1):
+        if len(number[i].p_search(p_dic))+len(number[i].c_search(c_dic))==n-1:
+            answer+=1
+    return answer
+
+class Node:
+    def __init__(self):
+        self.parent=[]
+        self.child=[]
+        
+    def p_search(self, p_dic):
+        if self in p_dic:
+            return p_dic[self]
+        else:
+            s=set()
+            for j in self.parent:
+                s.add(j)
+                s=s.union(j.p_search(p_dic))
+            p_dic[self]=s
+            return s
+
+    def c_search(self, c_dic):
+        if self in c_dic:
+            return c_dic[self]
+        else:
+            s=set()
+            for j in self.child:
+                s.add(j)
+                s=s.union(j.c_search(c_dic))
+            c_dic[self]=s
+            return s
+```
