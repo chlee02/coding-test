@@ -1525,3 +1525,45 @@ def solution(routes):
         m=min(m,j)
     return answer
 ```
+
+# 이중우선순위큐
+- 이중 우선순위 큐는 다음 연산을 할 수 있는 자료구조를 말합니다.
+```
+명령어	수신 탑(높이)
+I 숫자	큐에 주어진 숫자를 삽입합니다.
+D 1	큐에서 최댓값을 삭제합니다.
+D -1	큐에서 최솟값을 삭제합니다.
+```
+- 이중 우선순위 큐가 할 연산 operations가 매개변수로 주어질 때, 모든 연산을 처리한 후 큐가 비어있으면 [0,0] 비어있지 않으면 [최댓값, 최솟값]을 return 하도록 solution 함수를 구현해주세요.
+
+```python
+from heapq import heappush, heappop
+
+def solution(operations):
+    answer = []
+    pos_heap=[]
+    neg_heap=[]
+    for i in operations:
+        if i[0]=="I":
+            num=int(i[2:])
+            heappush(pos_heap,num)
+            heappush(neg_heap,-num)
+        elif i[0]=="D":
+            if not pos_heap:
+                continue
+            elif i[2]=="1":
+                m=heappop(neg_heap)
+                pos_heap.remove(-m)
+            else:
+                n=heappop(pos_heap)
+                neg_heap.remove(-n)
+    if not neg_heap:
+        answer.append(0)
+    else:
+        answer.append(-heappop(neg_heap))
+    if not pos_heap:
+        answer.append(0)
+    else:
+        answer.append(heappop(pos_heap))
+    return answer
+```
