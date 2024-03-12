@@ -1613,3 +1613,39 @@ def solution(m, n, puddles):
                     case[i][j]=case[i][j-1]+case[i-1][j]
     return case[n-1][m-1]%1000000007
 ```
+
+# 가장 먼 노드
+- n개의 노드가 있는 그래프가 있습니다. 각 노드는 1부터 n까지 번호가 적혀있습니다. 1번 노드에서 가장 멀리 떨어진 노드의 갯수를 구하려고 합니다. 가장 멀리 떨어진 노드란 최단경로로 이동했을 때 간선의 개수가 가장 많은 노드들을 의미합니다.
+- 노드의 개수 n, 간선에 대한 정보가 담긴 2차원 배열 vertex가 매개변수로 주어질 때, 1번 노드로부터 가장 멀리 떨어진 노드가 몇 개인지를 return 하도록 solution 함수를 작성해주세요.
+
+```python
+from collections import deque
+
+def solution(n, edge):
+    answer = 0
+    dic={}
+    visited=[[0,0] for i in range(n+1)]
+    visited[1]=[1,0]
+    dis=0
+    q=deque([1])
+    for i in range(1,n+1):
+        dic[i]=set()
+    for i,j in edge:
+        dic[i].add(j)
+        dic[j].add(i)
+    while q:
+        dis+=1
+        ad=[]
+        while q:
+            ad.append(q.popleft())
+        for i in ad:
+            for j in dic[i]:
+                if not visited[j][0]:
+                    visited[j][0]=1
+                    visited[j][1]=dis
+                    q.append(j)
+    for i in visited:
+        if i[1]==dis-1:
+            answer+=1
+    return answer
+```
