@@ -1738,3 +1738,45 @@ def solution(targets):
         e=min(e,j)
     return answer
 ```
+
+# 조이스틱
+- 조이스틱으로 알파벳 이름을 완성하세요. 맨 처음엔 A로만 이루어져 있습니다.
+- ex) 완성해야 하는 이름이 세 글자면 AAA, 네 글자면 AAAA
+- 조이스틱을 각 방향으로 움직이면 아래와 같습니다.
+```
+▲ - 다음 알파벳
+▼ - 이전 알파벳 (A에서 아래쪽으로 이동하면 Z로)
+◀ - 커서를 왼쪽으로 이동 (첫 번째 위치에서 왼쪽으로 이동하면 마지막 문자에 커서)
+▶ - 커서를 오른쪽으로 이동 (마지막 위치에서 오른쪽으로 이동하면 첫 번째 문자에 커서)
+```
+- 만들고자 하는 이름 name이 매개변수로 주어질 때, 이름에 대해 조이스틱 조작 횟수의 최솟값을 return 하도록 solution 함수를 만드세요
+
+```python
+from string import ascii_uppercase
+
+def solution(name):
+    answer = 0
+    dic={}
+    for i in range(len(ascii_uppercase)):
+        dic[ascii_uppercase[i]]=i
+    dif=[0 for i in range(len(name))]
+    for i in range(len(dif)):
+        if name[i]!='A':
+            answer+=min(dic[name[i]],26-dic[name[i]])
+            dif[i]=1
+    con=0
+    t=0
+    idx=0
+    last=len(name)
+    for i in range(len(dif)):
+        if dif[i]==0:
+            last=i
+            t+=1
+            if t>=con:
+                con=t
+                idx=i
+        else:
+            t=0
+    answer+=min(min(len(name)-idx-1,idx-con)+len(name)-con-1,last)
+    return answer
+```
