@@ -1898,3 +1898,5 @@ def solution(board):
         answer=0
     return answer
 ```
+
+# 점 찍기
