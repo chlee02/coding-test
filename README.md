@@ -1989,3 +1989,59 @@ def solution(n, k):
     answer.append(num[1])
     return answer
 ```
+
+# 행렬 테두리 회전하기
+- rows x columns 크기인 행렬이 있습니다. 행렬에는 1부터 rows x columns까지의 숫자가 한 줄씩 순서대로 적혀있습니다. 이 행렬에서 직사각형 모양의 범위를 여러 번 선택해, 테두리 부분에 있는 숫자들을 시계방향으로 회전시키려 합니다. 각 회전은 (x1, y1, x2, y2)인 정수 4개로 표현하며, 그 의미는 다음과 같습니다.
+- x1 행 y1 열부터 x2 행 y2 열까지의 영역에 해당하는 직사각형에서 테두리에 있는 숫자들을 한 칸씩 시계방향으로 회전합니다.
+- 행렬의 세로 길이(행 개수) rows, 가로 길이(열 개수) columns, 그리고 회전들의 목록 queries가 주어질 때, 각 회전들을 배열에 적용한 뒤, 그 회전에 의해 위치가 바뀐 숫자들 중 가장 작은 숫자들을 순서대로 배열에 담아 return 하도록 solution 함수를 완성해주세요.
+
+```python
+from collections import deque
+
+def solution(rows, columns, queries):
+    answer = []
+    matrix=[[i for i in range(j*columns+1,(j+1)*columns+1)] for j in range(rows)]
+    for i in queries:
+        arr=rotate(matrix, i)
+        matrix=arr[0]
+        answer.append(arr[1])
+    return answer
+
+def rotate(matrix, query):
+    d=deque()
+    i=[query[0],query[1]]
+    for j in range(query[3]-query[1]+1):
+        d.append(matrix[i[0]-1][i[1]-1])
+        if j<query[3]-query[1]:
+            i[1]+=1
+    for j in range(query[2]-query[0]):
+        i[0]+=1
+        d.append(matrix[i[0]-1][i[1]-1])
+    for j in range(query[3]-query[1]):
+        i[1]-=1
+        d.append(matrix[i[0]-1][i[1]-1])
+    for j in range(query[2]-query[0]-1):
+        i[0]-=1
+        d.append(matrix[i[0]-1][i[1]-1])
+    d.rotate(1)
+    i=[query[0],query[1]]
+    t=0
+    for j in range(query[3]-query[1]+1):
+        matrix[i[0]-1][i[1]-1]=d[t]
+        t+=1
+        if j<query[3]-query[1]:
+            i[1]+=1
+    for j in range(query[2]-query[0]):
+        i[0]+=1
+        matrix[i[0]-1][i[1]-1]=d[t]
+        t+=1
+    for j in range(query[3]-query[1]):
+        i[1]-=1
+        matrix[i[0]-1][i[1]-1]=d[t]
+        t+=1
+    for j in range(query[2]-query[0]-1):
+        i[0]-=1
+        matrix[i[0]-1][i[1]-1]=d[t]
+        t+=1
+    return [matrix,min(d)]
+```
