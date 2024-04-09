@@ -2167,3 +2167,5 @@ def cal(arr,op1,op2,op3):
             break
     return arr[0]
 ```
+
+.
