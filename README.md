@@ -2342,3 +2342,4 @@ def solution(number, k):
         answer+=number[i]
     return answer
 ```
+`
