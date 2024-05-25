@@ -2446,3 +2446,21 @@ def solution(scoville, K):
         answer+=1
     return answer
 ```
+
+# 주식가격
+- 초 단위로 기록된 주식가격이 담긴 배열 prices가 매개변수로 주어질 때, 가격이 떨어지지 않은 기간은 몇 초인지를 return 하도록 solution 함수를 완성하세요.
+
+```python
+def solution(prices):
+    answer = [0 for i in range(len(prices))]
+    s=[]
+    for i in range(len(prices)):
+        while s and prices[i]<s[-1][1]:
+            t=s.pop()
+            answer[t[0]]=i-t[0]
+        s.append([i,prices[i]])
+    for i in range(len(prices)):
+        if answer[i]==0:
+            answer[i]=len(prices)-i-1
+    return answer
+```
