@@ -2464,3 +2464,25 @@ def solution(prices):
             answer[i]=len(prices)-i-1
     return answer
 ```
+
+# 2개 이하로 다른 비트
+- 양의 정수 x에 대한 함수 f(x)를 다음과 같이 정의합니다.
+- x보다 크고 x와 비트가 1~2개 다른 수들 중에서 제일 작은 수
+- 정수들이 담긴 배열 numbers가 매개변수로 주어집니다. numbers의 모든 수들에 대하여 각 수의 f 값을 배열에 차례대로 담아 return 하도록 solution 함수를 완성해주세요.
+
+```python
+def solution(numbers):
+    answer = []
+    for i in numbers:
+        b=bin(i)[2:]
+        if b[-1]=='0':
+            answer.append(int(b,2)+1)
+        else:
+            t=1
+            while True:
+                if len(b)==t or b[-1-t]=='0':
+                    break
+                t+=1
+            answer.append(int(b,2)+2**(t-1))
+    return answer
+```
