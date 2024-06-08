@@ -1232,7 +1232,7 @@ def solution(sticker):
             a2[i]=max(a2[i-2]+a2[i],a2[i-1])
     answer=max(max(a1),max(a2))
     return answer
-```
+``` 
 
 # 섬 연결하기
 - n개의 섬 사이에 다리를 건설하는 비용(costs)이 주어질 때, 최소의 비용으로 모든 섬이 서로 통행 가능하도록 만들 때 필요한 최소 비용을 return 하도록 solution을 완성하세요.
