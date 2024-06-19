@@ -2639,3 +2639,25 @@ def solution(r1, r2):
     answer=answer*4
     return answer
 ```
+
+# 타겟 넘버
+- n개의 음이 아닌 정수들이 있습니다. 이 정수들을 순서를 바꾸지 않고 적절히 더하거나 빼서 타겟 넘버를 만들려고 합니다.
+- 사용할 수 있는 숫자가 담긴 배열 numbers, 타겟 넘버 target이 매개변수로 주어질 때 숫자를 적절히 더하고 빼서 타겟 넘버를 만드는 방법의 수를 return 하도록 solution 함수를 작성해주세요.
+
+```python
+def solution(numbers, target):
+    global answer
+    answer = 0
+    def search(s,n,i):
+        s+=n
+        if i==len(numbers)-1:
+            if s==target:
+                global answer
+                answer+=1
+            return
+        search(s,numbers[i+1],i+1)
+        search(s,-numbers[i+1],i+1)
+    search(0,numbers[0],0)
+    search(0,-numbers[0],0)
+    return answer
+```
