@@ -2486,7 +2486,7 @@ def solution(numbers):
                 t+=1
             answer.append(int(b,2)+2**(t-1))
     return answer
-```
+``` 
 
 # 뒤에 있는 큰 수 찾기
 - 정수로 이루어진 배열 numbers가 있습니다. 배열 의 각 원소들에 대해 자신보다 뒤에 있는 숫자 중에서 자신보다 크면서 가장 가까이 있는 수를 뒷 큰수라고 합니다.
