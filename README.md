@@ -10,7 +10,7 @@
 - 제한 사항
 입력된 수, num은 1 이상 8,000,000 미만인 정수입니다.
  
-```python 
+```python  
 def solution(num):
     answer = 0
     while num!=1:
