@@ -2837,4 +2837,4 @@ def solution(N, road, K):
         if distance[i]<=K:
             answer+=1
     return answer
-```
+``` 
