@@ -2926,3 +2926,34 @@ def solution(routes):
         m=min(m,j)
     return answer
 ```
+
+# 베스트앨범
+- 스트리밍 사이트에서 장르 별로 가장 많이 재생된 노래를 두 개씩 모아 베스트 앨범을 출시하려 합니다. 노래는 고유 번호로 구분하며, 노래를 수록하는 기준은 다음과 같습니다.
+```
+속한 노래가 많이 재생된 장르를 먼저 수록합니다.
+장르 내에서 많이 재생된 노래를 먼저 수록합니다.
+장르 내에서 재생 횟수가 같은 노래 중에서는 고유 번호가 낮은 노래를 먼저 수록합니다.
+```
+- 노래의 장르를 나타내는 문자열 배열 genres와 노래별 재생 횟수를 나타내는 정수 배열 plays가 주어질 때, 베스트 앨범에 들어갈 노래의 고유 번호를 순서대로 return 하도록 solution 함수를 완성하세요.
+
+```python
+def solution(genres, plays):
+    answer = []
+    dic={}
+    for i in genres:
+        if i not in dic:
+            dic[i]=[[],0]
+    for i in range(len(plays)):
+        dic[genres[i]][0].append([plays[i],i])
+        dic[genres[i]][1]+=plays[i]
+    for i in dic.keys():
+        dic[i][0].sort(key=lambda x:(x[0],-x[1]), reverse=True)
+    genres_sorted=sorted(dic.items(), key=lambda x:x[1][1], reverse=True)
+    for i in genres_sorted:
+        if len(i[1][0])==1:
+            answer.append(i[1][0][0][1])
+        else:
+            for j in range(2):
+                answer.append(i[1][0][j][1])
+    return answer
+```
