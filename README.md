@@ -109,7 +109,7 @@ def solution(bandage, health, attacks):
     answer = health
     maxhealth=health
     time=0
-    count=0
+    count=0 
     for i in attacks:
         for j in range(i[0]-time-1):
             answer+=bandage[1]
