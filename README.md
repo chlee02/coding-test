@@ -11,7 +11,7 @@
 입력된 수, num은 1 이상 8,000,000 미만인 정수입니다. 
    
 ```python  
-def solution(num):
+def solution(num): 
     answer = 0 
     while num!=1: 
         if num%2==0: 
