@@ -2254,7 +2254,7 @@ def solution(weights):
 from math import ceil
 
 def solution(arrayA, arrayB):
-    answer = 0
+    answer = 0 
     arrayA.sort()
     arrayB.sort()
     dA=[arrayA[0]]
