@@ -3307,3 +3307,52 @@ WHERE USER_ID IN (SELECT USER_ID
 GROUP BY YEAR(SALES_DATE), MONTH(SALES_DATE)
 ORDER BY YEAR, MONTH
 ```
+
+# [PCCP 기출문제] 3번 / 충돌위험 찾기 (2024-10-07)
+- 어떤 물류 센터는 로봇을 이용한 자동 운송 시스템을 운영합니다. 운송 시스템이 작동하는 규칙은 다음과 같습니다.
+```
+물류 센터에는 (r, c)와 같이 2차원 좌표로 나타낼 수 있는 n개의 포인트가 존재합니다. 각 포인트는 1~n까지의 서로 다른 번호를 가집니다.
+로봇마다 정해진 운송 경로가 존재합니다. 운송 경로는 m개의 포인트로 구성되고 로봇은 첫 포인트에서 시작해 할당된 포인트를 순서대로 방문합니다.
+운송 시스템에 사용되는 로봇은 x대이고, 모든 로봇은 0초에 동시에 출발합니다. 로봇은 1초마다 r 좌표와 c 좌표 중 하나가 1만큼 감소하거나 증가한 좌표로 이동할 수 있습니다.
+다음 포인트로 이동할 때는 항상 최단 경로로 이동하며 최단 경로가 여러 가지일 경우, r 좌표가 변하는 이동을 c 좌표가 변하는 이동보다 먼저 합니다.
+마지막 포인트에 도착한 로봇은 운송을 마치고 물류 센터를 벗어납니다. 로봇이 물류 센터를 벗어나는 경로는 고려하지 않습니다.
+```
+- 이동 중 같은 좌표에 로봇이 2대 이상 모인다면 충돌할 가능성이 있는 위험 상황으로 판단합니다. 관리자인 당신은 현재 설정대로 로봇이 움직일 때 위험한 상황이 총 몇 번 일어나는지 알고 싶습니다. 만약 어떤 시간에 여러 좌표에서 위험 상황이 발생한다면 그 횟수를 모두 더합니다.
+- 운송 포인트 n개의 좌표를 담은 2차원 정수 배열 points와 로봇 x대의 운송 경로를 담은 2차원 정수 배열 routes가 매개변수로 주어집니다. 이때 모든 로봇이 운송을 마칠 때까지 발생하는 위험한 상황의 횟수를 return 하도록 solution 함수를 완성해 주세요.
+
+```python
+def solution(points, routes):
+    answer = 0
+    dic_robot={}    # 각 로봇의 경로를 담은 딕셔너리
+    for i in range(len(routes)):    # 딕셔너리를 채우는 작업
+        dic_robot[i]=[points[routes[i][0]-1]]   # 각 로봇의 시작 좌표를 각 딕셔너리 값의 첫 번째 원소로 저장
+        for j in range(1,len(routes[i])):
+            while(dic_robot[i][-1]!=points[routes[i][j]-1]):  # 시작 좌표가 목표 좌표와 다른 경우 반복
+                if dic_robot[i][-1][0]<points[routes[i][j]-1][0]: # r 값부터 한 칸씩 이동
+                    dic_robot[i].append([dic_robot[i][-1][0]+1,dic_robot[i][-1][1]])
+                elif dic_robot[i][-1][0]>points[routes[i][j]-1][0]:
+                    dic_robot[i].append([dic_robot[i][-1][0]-1,dic_robot[i][-1][1]]) # 현재 좌표의 r 값이 목표 좌표의 r 값보다 작으면 1 더하고 크면 1 빼기
+                elif dic_robot[i][-1][1]<points[routes[i][j]-1][1]: # r 값이 같으면 c 값 한 칸씩 이동
+                    dic_robot[i].append([dic_robot[i][-1][0],dic_robot[i][-1][1]+1])
+                elif dic_robot[i][-1][1]>points[routes[i][j]-1][1]:
+                    dic_robot[i].append([dic_robot[i][-1][0],dic_robot[i][-1][1]-1]) # 현재 좌표의 c 값이 목표 좌표의 c 값보다 작으면 1 더하고 크면 1 빼기
+    cur_time=0  # 현재 시간
+    while(dic_robot):    # 모든 로봇이 운송을 마칠 때까지 반복
+        dic_co={}   # 현재 좌표 딕셔너리 생성
+        del_robot=[]    # 운송을 마친 로봇을 저장할 리스트 생성
+        for i in dic_robot: # 좌표별 로봇의 수를 좌표 딕셔너리에 기록
+            cur_co=tuple(dic_robot[i][cur_time])
+            if cur_co in dic_co:
+                dic_co[cur_co]+=1
+            else:
+                dic_co[cur_co]=1
+            if len(dic_robot[i])==cur_time+1:   # 로봇이 모든 경로를 이동하면 경로 딕셔너리에서 삭제
+                del_robot.append(i)
+        for i in del_robot:
+            del dic_robot[i]
+        for i in dic_co:    # 좌표별로 존재하는 로봇 수가 2 이상이면 answer 1 증가
+            if dic_co[i]>=2:
+                answer+=1
+        cur_time+=1 # 현재 시간 1 증가
+    return answer
+```
