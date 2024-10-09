@@ -3356,3 +3356,26 @@ def solution(points, routes):
         cur_time+=1 # 현재 시간 1 증가
     return answer
 ```
+
+# 가장 큰 수 (2024-10-09)
+- 0 또는 양의 정수가 주어졌을 때, 정수를 이어 붙여 만들 수 있는 가장 큰 수를 알아내 주세요.
+- 예를 들어, 주어진 정수가 [6, 10, 2]라면 [6102, 6210, 1062, 1026, 2610, 2106]를 만들 수 있고, 이중 가장 큰 수는 6210입니다.
+- 0 또는 양의 정수가 담긴 배열 numbers가 매개변수로 주어질 때, 순서를 재배치하여 만들 수 있는 가장 큰 수를 문자열로 바꾸어 return 하도록 solution 함수를 작성해주세요.
+
+```python
+from functools import cmp_to_key
+
+def solution(numbers):
+    answer = ''
+    def compare(x,y):   # 사용자 정의 함수 생성
+        if int(x+y)>=int(y+x):
+            return -1
+        else:
+            return 1
+    for i in range(len(numbers)):
+        numbers[i]=str(numbers[i])  # 숫자들을 문자열로 변환
+    numbers.sort(key=cmp_to_key(compare))  # 사용자 정의 함수를 기준으로 리스트 정렬
+    for i in numbers:   # 문자열로 변환
+        answer+=i
+    return str(int(answer))
+```
