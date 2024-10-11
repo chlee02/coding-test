@@ -3379,3 +3379,65 @@ def solution(numbers):
         answer+=i
     return str(int(answer))
 ```
+
+# 단어 변환 (2024-10-11)
+- 두 개의 단어 begin, target과 단어의 집합 words가 있습니다. 아래와 같은 규칙을 이용하여 begin에서 target으로 변환하는 가장 짧은 변환 과정을 찾으려고 합니다.
+```
+1. 한 번에 한 개의 알파벳만 바꿀 수 있습니다.
+2. words에 있는 단어로만 변환할 수 있습니다.
+```
+- 예를 들어 begin이 "hit", target가 "cog", words가 ["hot","dot","dog","lot","log","cog"]라면 "hit" -> "hot" -> "dot" -> "dog" -> "cog"와 같이 4단계를 거쳐 변환할 수 있습니다.
+- 두 개의 단어 begin, target과 단어의 집합 words가 매개변수로 주어질 때, 최소 몇 단계의 과정을 거쳐 begin을 target으로 변환할 수 있는지 return 하도록 solution 함수를 작성해주세요.
+
+```python
+def solution(begin, target, words):
+    answer = 1
+    if target not in words: # target 값이 words에 없을 경우 0 반환
+        return 0
+    def compare(x,y):   # 두 단어가 하나의 알파벳만 다르다면 1을 반환하는 함수
+        diff=0
+        for i in range(len(x)):
+            if x[i]!=y[i]:
+                diff+=1
+            if diff>=2:
+                return 0
+        if diff==1:
+            return 1
+    temp=[]     # 중간다리 단어로 사용될 단어들을 저장하는 임시 리스트 생성
+    t_remove=[]   # 단계마다 삭제할 단어를 저장하는 임시 리스트 생성
+    t_append=[]     # 단계마다 추가할 단어를 저장하는 임시 리스트 생성
+    temp.append(target)
+    words.remove(target)
+    while words:
+        for i in temp:  # 매 단계를 실행하기 전 temp에 있는 단어를 t_remove에 기록
+            if compare(i,begin):    # 만약 temp에 있는 단어가 begin과 하나 차이 난다면 answer 반환
+                return answer
+            t_remove.append(i)
+        for i in words: # temp에 있는 단어들과 하나 차이나는 단어들을 temp에 저장
+            for j in temp:
+                if compare(i,j):
+                    if i not in t_append:
+                        t_append.append(i)
+        for i in t_append:
+            temp.append(i)
+        t_append.clear()
+        for i in t_remove:    # t_remove에 있는 단어들을 temp에서 삭제
+            temp.remove(i)
+        t_remove.clear()
+        for i in temp:      # temp에 있는 단어들을 words에서 삭제
+            words.remove(i)
+        if not temp:    # 매 단계마다 중간다리 단어를 체크하여 없으면 0 반환
+            return 0
+        answer+=1
+    for i in temp:      # words가 비었을 경우 마지막으로 temp에 있는 단어들을 비교
+        if compare(i,begin):
+            return answer
+        else:
+            return 0
+```
+- comment
+```
+알파벳을 하나씩 바꾸어 목표 단어까지 가장 짧은 변환 과정을 찾는 문제이다.
+탐색 과정에서 최적의 해인지 알 방법이 없고, 정답과 멀어지는 방향인지 알 방법이 없다.
+그렇기 때문에 알파벳이 하나만 다른 단어를 모두 찾아 리스트에 저장하고 리스트에 저장된 단어들에서 탐색을 반복하는 너비 우선 탐색을 사용하였다.
+```
