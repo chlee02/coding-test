@@ -3471,3 +3471,25 @@ def solution(scores):
 근무 태도 점수가 가장 큰 사원들은 인센티브를 받게 되고 그보다 낮은 사원들은 동료 평가 점수에서 높은 점수를 얻어야 한다.
 동료 평가 점수는 오름차순으로 정렬이 되어 있어 리스트를 탐색하면서 최대 동료 평가 점수를 기준 점수로 갱신한다면 인센티브 수령 여부를 쉽게 판별할 수 있다.
 ```
+
+# H-Index (2024-10-15)
+- H-Index는 과학자의 생산성과 영향력을 나타내는 지표입니다. 어느 과학자의 H-Index를 나타내는 값인 h를 구하려고 합니다. 위키백과1에 따르면, H-Index는 다음과 같이 구합니다.
+- 어떤 과학자가 발표한 논문 n편 중, h번 이상 인용된 논문이 h편 이상이고 나머지 논문이 h번 이하 인용되었다면 h의 최댓값이 이 과학자의 H-Index입니다.
+- 어떤 과학자가 발표한 논문의 인용 횟수를 담은 배열 citations가 매개변수로 주어질 때, 이 과학자의 H-Index를 return 하도록 solution 함수를 작성해주세요.
+
+```python
+def solution(citations):
+    answer = 0
+    citations.sort(reverse=True)    # 내림차순 정렬
+    for i in range(1,len(citations)+1):
+        for j in range(i):          # 인덱스를 1씩 늘리면서 citations의 값이 인덱스보다 작은 경우 인덱스 반환
+            if citations[j]<i:
+                return answer
+        answer+=1
+    return len(citations)           # 모든 값이 인덱스보다 큰 경우 h-index의 최대값인 논문 수 반환
+```
+- comment
+```
+h번 이상 인용된 논문의 개수가 h 이상인 h값의 최대값을 구하는 문제이다.
+내림차순 정렬을 한다면 해당 인덱스의 값보다 더 인용된 논문이 존재하지 않기 때문에 그 인덱스의 값을 이용해 문제를 해결하였다.
+```
